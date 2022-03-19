@@ -41,5 +41,9 @@ namespace SharingSkills_HSE_backend.Models
         /// Отзывы
         /// </summary>
         public DbSet<Feedback> Feedbacks { get; set; }
+        /// <summary>
+        /// Сообщения
+        /// </summary>
+        public DbSet<Message> Messages { get; set; }
     }
 }
