@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using SharingSkills_HSE_backend.Models;
 using System;
+using SharingSkills_HSE_backend.Other;
 
 namespace SharingSkills_HSE_backend
 {
@@ -19,23 +20,26 @@ namespace SharingSkills_HSE_backend
         public IConfiguration Configuration { get; }
 
         /// <summary>
-        /// Подключение сервисов
+        /// РџРѕРґРєР»СЋС‡РµРЅРёРµ СЃРµСЂРІРёСЃРѕРІ
         /// </summary>
-        /// <param name="services">Сервисы</param>
+        /// <param name="services">РЎРµСЂРІРёСЃС‹</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            // Подключение JSON сериализатора
+            // РџРѕРґРєР»СЋС‡РµРЅРёРµ SignalR РґР»СЏ С‡Р°С‚Р°
+            services.AddSignalR();
+            // РџРѕРґРєР»СЋС‡РµРЅРёРµ JSON СЃРµСЂРёР°Р»РёР·Р°С‚РѕСЂР°
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            // Подключение контроллеров
+            // РџРѕРґРєР»СЋС‡РµРЅРёРµ РєРѕРЅС‚СЂРѕР»Р»РµСЂРѕРІ
             services.AddControllers();
-            // Подключение контекста базы данных
+            // РџРѕРґРєР»СЋС‡РµРЅРёРµ РєРѕРЅС‚РµРєСЃС‚Р° Р±Р°Р·С‹ РґР°РЅРЅС‹С…
             if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
                 services.AddDbContext<SharingSkillsContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("SharingSkillsContextProd")));
             else
                 services.AddDbContext<SharingSkillsContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("SharingSkillsContext")));
+
             services.BuildServiceProvider().GetService<SharingSkillsContext>().Database.Migrate();
         }
 
@@ -53,6 +57,7 @@ namespace SharingSkills_HSE_backend
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<ChatHub>("/chat");
                 endpoints.MapControllers();
             });
         }
