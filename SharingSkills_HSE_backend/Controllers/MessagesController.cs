@@ -34,7 +34,7 @@ namespace SharingSkills_HSE_backend.Controllers
         /// <param name="id">ID сообщения</param>
         // GET: api/Messages/1
         [HttpGet("{id}")]
-        public async Task<ActionResult<Message>> GetMessage(int id)
+        public async Task<ActionResult<Message>> GetMessage(long id)
         {
             var m = await _context.Messages.FirstOrDefaultAsync(m => m.Id == id);
             if (m == null)

@@ -1,4 +1,4 @@
-using MimeKit;
+﻿using MimeKit;
 using MailKit.Net.Smtp;
 using System.Threading.Tasks;
 

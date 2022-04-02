@@ -45,7 +45,7 @@ namespace SharingSkills_HSE_backend.Controllers
         /// <param name="id">ID отзыва</param>
         // GET api/Feedbacks/1
         [HttpGet("{id}")]
-        public async Task<ActionResult<Feedback>> GetFeedback(int id)
+        public async Task<ActionResult<Feedback>> GetFeedback(long id)
         {
             var f = await _context.Feedbacks.FirstOrDefaultAsync(f => f.Id == id);
             if (f == null)
@@ -79,12 +79,18 @@ namespace SharingSkills_HSE_backend.Controllers
             receiver.Feedbacks.Add(feedback);
             _context.Feedbacks.Add(feedback);
             // Даем пользователю права модератора
-            if (receiver.GradesCount >= 5 && receiver.AverageGrade >= 3.5)
+            if (receiver.GradesCount >= 5 && receiver.AverageGrade >= 3.5 && !receiver.IsModer)
+            {
                 receiver.IsModer = true;
+                await Mail.SendEmailAsync(receiver.Mail, "Статус модератора",
+                    $"Поздравляем!\n" +
+                    $"Вам стали доступны функции модератора в приложении \"Обмен навыками\".\n" +
+                    $"Теперь Вы можете удалять неприличные отзывы пользователей приложения.");
+            }
             // Оповещаем получателя нового отзыва
-            //await Mail.SendEmailAsync(receiver.Mail, "Новый отзыв",
-            //    $"{sender.Name} {sender.Surname} оставил(а) Вам новый отзыв.\n" +
-            //    $"Зайдите в приложение \"Обмен навыками\", чтобы узнать детали.");
+            await Mail.SendEmailAsync(receiver.Mail, "Новый отзыв",
+                $"{sender.Name} {sender.Surname} оставил(а) Вам новый отзыв.\n" +
+                $"Зайдите в приложение \"Обмен навыками\", чтобы узнать детали.");
             // Сохраняем изменения
             _context.Entry(receiver).State = EntityState.Modified;
             await _context.SaveChangesAsync();

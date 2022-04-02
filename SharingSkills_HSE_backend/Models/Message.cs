@@ -41,10 +41,5 @@ namespace SharingSkills_HSE_backend.Models
         /// Прочитано ли сообщение получателем
         /// </summary>
         public bool IsRead { get; set; }
-
-        /// <summary>
-        /// Фотография
-        /// </summary>
-        public byte[] Photo { get; set; }
     }
 }

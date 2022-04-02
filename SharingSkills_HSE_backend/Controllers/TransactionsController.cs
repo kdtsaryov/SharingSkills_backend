@@ -35,7 +35,7 @@ namespace SharingSkills_HSE_backend.Controllers
         /// <param name="id">ID обмена</param>
         // GET: api/Transactions/1
         [HttpGet("{id}")]
-        public async Task<ActionResult<Transaction>> GetTransaction(int id)
+        public async Task<ActionResult<Transaction>> GetTransaction(long id)
         {
             var t = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == id);
             if (t == null)
@@ -83,9 +83,9 @@ namespace SharingSkills_HSE_backend.Controllers
                 // Находим отправителя и получателя
                 var sender = await _context.Users.FindAsync(transaction.SenderMail);
                 var receiver = await _context.Users.FindAsync(transaction.ReceiverMail);
-                //await Mail.SendEmailAsync(sender.Mail, "Принятый обмен",
-                //    $"{receiver.Name} {receiver.Surname} принял(а) Ваш обмен.\n" +
-                //    $"Зайдите в приложение \"Обмен навыками\", чтобы узнать детали.");
+                await Mail.SendEmailAsync(sender.Mail, "Принятый обмен",
+                    $"{receiver.Name} {receiver.Surname} принял(а) Ваш обмен.\n" +
+                    $"Зайдите в приложение \"Обмен навыками\", чтобы узнать детали.");
             }
             // Если обмен завершил один пользователь, то оповещаем другого пользователя
             if (transaction.Status == 2)
@@ -96,16 +96,16 @@ namespace SharingSkills_HSE_backend.Controllers
                 // Если завершил отправитель
                 if (sender.Mail == mail)
                 {
-                    //await Mail.SendEmailAsync(receiver.Mail, "Обмен завершен",
-                    //    $"{sender.Name} {sender.Surname} завершил(а) обмен.\n" +
-                    //    $"Зайдите в приложение \"Обмен навыками\", чтобы узнать детали.");
+                    await Mail.SendEmailAsync(receiver.Mail, "Обмен завершен",
+                        $"{sender.Name} {sender.Surname} завершил(а) обмен.\n" +
+                        $"Зайдите в приложение \"Обмен навыками\", чтобы узнать детали.");
                 }
                 // Если завершил получатель
                 if (receiver.Mail == mail)
                 {
-                    //await Mail.SendEmailAsync(sender.Mail, "Обмен завершен",
-                    //    $"{receiver.Name} {receiver.Surname} завершил(а) обмен.\n" +
-                    //    $"Зайдите в приложение \"Обмен навыками\", чтобы узнать детали.");
+                    await Mail.SendEmailAsync(sender.Mail, "Обмен завершен",
+                        $"{receiver.Name} {receiver.Surname} завершил(а) обмен.\n" +
+                        $"Зайдите в приложение \"Обмен навыками\", чтобы узнать детали.");
                 }
             }
             return NoContent();
@@ -134,9 +134,9 @@ namespace SharingSkills_HSE_backend.Controllers
             receiver.Transactions.Add(transaction);
             _context.Transactions.Add(transaction);
             // Оповещаем получателя нового обмена
-            //await Mail.SendEmailAsync(receiver.Mail, "Новый обмен",
-            //    $"{sender.Name} {sender.Surname} предложил(а) Вам новый обмен.\n" +
-            //    $"Зайдите в приложение \"Обмен навыками\", чтобы узнать детали.");
+            await Mail.SendEmailAsync(receiver.Mail, "Новый обмен",
+                $"{sender.Name} {sender.Surname} предложил(а) Вам новый обмен.\n" +
+                $"Зайдите в приложение \"Обмен навыками\", чтобы узнать детали.");
             // Сохраняем изменения
             _context.Entry(sender).State = EntityState.Modified;
             _context.Entry(receiver).State = EntityState.Modified;
@@ -162,9 +162,9 @@ namespace SharingSkills_HSE_backend.Controllers
             // Если надо, то отправляем уведомление
             if (sendNotification)
             {
-                //await Mail.SendEmailAsync(sender.Mail, "Отказ в обмене",
-                //    $"{receiver.Name} {receiver.Surname} отказал(а) Вам в обмене.\n" +
-                //    $"Зайдите в приложение \"Обмен навыками\", чтобы узнать детали.");
+                await Mail.SendEmailAsync(sender.Mail, "Отказ в обмене",
+                    $"{receiver.Name} {receiver.Surname} отказал(а) Вам в обмене.\n" +
+                    $"Зайдите в приложение \"Обмен навыками\", чтобы узнать детали.");
             }
             // Удаляем обмен
             sender.Transactions.Remove(t);

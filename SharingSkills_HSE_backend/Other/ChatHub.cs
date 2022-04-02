@@ -56,7 +56,12 @@ namespace SharingSkills_HSE_backend.Other
                 await Clients.Caller.SendAsync("Receive", message);
             }
             else
+            {
+                await Mail.SendEmailAsync(mail, "Новое сообщение",
+                    $"Вам отправили новое сообщение.\n" +
+                    $"Зайдите в приложение \"Обмен навыками\", чтобы узнать детали.");
                 await Clients.Caller.SendAsync("Receive", message);
+            }  
         }
 
         /// <summary>

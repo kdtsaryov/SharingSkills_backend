@@ -20,19 +20,19 @@ namespace SharingSkills_HSE_backend
         public IConfiguration Configuration { get; }
 
         /// <summary>
-        /// РџРѕРґРєР»СЋС‡РµРЅРёРµ СЃРµСЂРІРёСЃРѕРІ
+        /// Подключение сервисов
         /// </summary>
-        /// <param name="services">РЎРµСЂРІРёСЃС‹</param>
+        /// <param name="services">Сервисы</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            // РџРѕРґРєР»СЋС‡РµРЅРёРµ SignalR РґР»СЏ С‡Р°С‚Р°
+            // Подключение SignalR для чата
             services.AddSignalR();
-            // РџРѕРґРєР»СЋС‡РµРЅРёРµ JSON СЃРµСЂРёР°Р»РёР·Р°С‚РѕСЂР°
+            // Подключение JSON сериализатора
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            // РџРѕРґРєР»СЋС‡РµРЅРёРµ РєРѕРЅС‚СЂРѕР»Р»РµСЂРѕРІ
+            // Подключение контроллеров
             services.AddControllers();
-            // РџРѕРґРєР»СЋС‡РµРЅРёРµ РєРѕРЅС‚РµРєСЃС‚Р° Р±Р°Р·С‹ РґР°РЅРЅС‹С…
+            // Подключение контекста базы данных
             if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
                 services.AddDbContext<SharingSkillsContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("SharingSkillsContextProd")));

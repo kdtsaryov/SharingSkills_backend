@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SharingSkills_HSE_backend.Models
 {
@@ -46,7 +46,7 @@ namespace SharingSkills_HSE_backend.Models
         /// <summary>
         /// Почта того, кто "хочет"
         /// </summary>
-        [RegularExpression(@"[_A-Za-z0-9]+@edu.hse.ru", ErrorMessage = "Некорректный почтовый адрес получателя")]
+        [RegularExpression(@"[_A-Za-z0-9]+@edu.hse.ru", ErrorMessage = "Некорректный почтовый адрес")]
         public string WhoWantMail { get; set; }
 
         /// <summary>

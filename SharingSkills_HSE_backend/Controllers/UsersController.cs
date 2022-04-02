@@ -48,9 +48,9 @@ namespace SharingSkills_HSE_backend.Controllers
             if (user != null)
             {
                 // Отправляем письмо с паролем
-                //await Mail.SendEmailAsync(user.Mail, "Напоминание пароля", "Здравствуйте!\n" +
-                //"В Обмене Навыками была нажата кнопка \"Забыли пароль?\"\n" +
-                //$"Ваш пароль - {user.Password}\n");
+                await Mail.SendEmailAsync(user.Mail, "Напоминание пароля", "Здравствуйте!\n" +
+                "В Обмене Навыками была нажата кнопка \"Забыли пароль?\"\n" +
+                $"Ваш пароль - {user.Password}\n");
                 return Ok();
             }
             return BadRequest();
@@ -276,9 +276,9 @@ namespace SharingSkills_HSE_backend.Controllers
             // Генерация кода подтверждения
             user.ConfirmationCodeServer = rnd.Next(1000, 10000);
             // Отправка этого кода на почту
-            //await Mail.SendEmailAsync(user.Mail, "Код подтверждения регистрации", "Здравствуйте!\n" +
-            //    "Спасибо за регистрацию в Обмене Навыками\n" +
-            //    $"Ваш код подтверждения - {user.ConfirmationCodeServer}\n");
+            await Mail.SendEmailAsync(user.Mail, "Код подтверждения регистрации", "Здравствуйте!\n" +
+                "Спасибо за регистрацию в Обмене Навыками\n" +
+                $"Ваш код подтверждения - {user.ConfirmationCodeServer}\n");
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetUser", new { mail = user.Mail }, user);
