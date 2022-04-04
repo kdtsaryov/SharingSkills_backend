@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace SharingSkills_HSE_backend.Models
@@ -36,10 +36,5 @@ namespace SharingSkills_HSE_backend.Models
         /// </summary>
         [RegularExpression(@"[_A-Za-z0-9]+@edu.hse.ru", ErrorMessage = "Некорректный почтовый адрес получателя")]
         public string ReceiverMail { get; set; }
-
-        /// <summary>
-        /// Прочитано ли сообщение получателем
-        /// </summary>
-        public bool IsRead { get; set; }
     }
 }
