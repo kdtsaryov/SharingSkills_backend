@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SharingSkills_HSE_backend.Models;
 using System.Collections.Generic;
@@ -59,7 +59,7 @@ namespace SharingSkills_HSE_backend.Controllers
         /// <param name="mail2">Почта 2</param>
         /// <param name="n">Какая по счету подгрузка</param>
         // GET: api/Messages/kdtsaryov@edu.hse.ru/eoshtanko@edu.hse.ru/0
-        [HttpGet("{mail1}/{mail2}")]
+        [HttpGet("{mail1}/{mail2}/{n}")]
         public async Task<ActionResult<IEnumerable<Message>>> GetMessages(string mail1, string mail2, int n)
         {
             // Находим пользователей
@@ -84,7 +84,7 @@ namespace SharingSkills_HSE_backend.Controllers
         /// </summary>
         /// <param name="id">ID сообщения</param>
         /// <param name="message">Сообщение</param>
-        // PUT: api/Messages/kdtsaryov@edu.hse.ru
+        // PUT: api/Messages/1
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMessage(long id, Message message)
         {
@@ -122,6 +122,15 @@ namespace SharingSkills_HSE_backend.Controllers
             var receiver = await _context.Users.FindAsync(message.ReceiverMail);
             if (sender == null || receiver == null || sender == receiver)
                 return BadRequest();
+            // Находим переписку
+            var chat = await _context.Chats.FirstOrDefaultAsync(c => (c.Mail1 == message.SenderMail && c.Mail2 == message.ReceiverMail) ||
+                                                                     (c.Mail2 == message.SenderMail && c.Mail1 == message.ReceiverMail));
+            if (chat == null)
+                return BadRequest();
+            // Обновляем данные переписки
+            chat.LastMessage = message.Text;
+            chat.SendTime = message.SendTime;
+            _context.Entry(chat).State = EntityState.Modified;
             // Добавляем сообщение
             _context.Messages.Add(message);
             await _context.SaveChangesAsync();
