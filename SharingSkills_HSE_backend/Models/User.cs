@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -115,6 +115,11 @@ namespace SharingSkills_HSE_backend.Models
         /// Отзывы
         /// </summary>
         public List<Feedback> Feedbacks { get; set; } = new List<Feedback>();
+
+        /// <summary>
+        /// Переписки
+        /// </summary>
+        public List<Chat> Chats { get; set; } = new List<Chat>();
 
         /// <summary>
         /// Количество оценок
