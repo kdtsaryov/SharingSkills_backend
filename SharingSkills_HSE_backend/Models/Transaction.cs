@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SharingSkills_HSE_backend.Models
 {
@@ -54,5 +55,10 @@ namespace SharingSkills_HSE_backend.Models
         /// </summary>
         [Range(0, 2, ErrorMessage = "Некорректный статус обмена")]
         public int Status { get; set; }
+
+        /// <summary>
+        /// Отправитель и получатель
+        /// </summary>
+        public List<User> Users { get; set; } = new List<User>();
     }
 }
