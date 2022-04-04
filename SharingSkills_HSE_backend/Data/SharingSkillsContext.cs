@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace SharingSkills_HSE_backend.Models
 {
@@ -45,5 +45,9 @@ namespace SharingSkills_HSE_backend.Models
         /// Сообщения
         /// </summary>
         public DbSet<Message> Messages { get; set; }
+        /// <summary>
+        /// Переписки
+        /// </summary>
+        public DbSet<Chat> Chats { get; set; }
     }
 }
