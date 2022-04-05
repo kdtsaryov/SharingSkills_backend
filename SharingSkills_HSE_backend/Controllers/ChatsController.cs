@@ -36,7 +36,7 @@ namespace SharingSkills_HSE_backend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Chat>> GetChat(long id)
         {
-            var c = await _context.Chats.Include(c => c.LastMessage).FirstOrDefaultAsync(c => c.Id == id);
+            var c = await _context.Chats.FirstOrDefaultAsync(c => c.Id == id);
             if (c == null)
                 return NotFound();
             return c;
@@ -49,7 +49,7 @@ namespace SharingSkills_HSE_backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Chat>>> GetChats()
         {
-            return await _context.Chats.Include(c => c.LastMessage).ToListAsync();
+            return await _context.Chats.ToListAsync();
         }
 
         /// <summary>
