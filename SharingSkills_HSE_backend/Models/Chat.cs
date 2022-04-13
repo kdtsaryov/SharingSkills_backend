@@ -18,6 +18,7 @@ namespace SharingSkills_HSE_backend.Models
         /// <summary>
         /// Последнее сообщение
         /// </summary>
+        [StringLength(301, ErrorMessage = "Слишком много символов")]
         public string LastMessage { get; set; }
 
         /// <summary>
