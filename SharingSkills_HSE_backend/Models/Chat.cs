@@ -24,7 +24,7 @@ namespace SharingSkills_HSE_backend.Models
         /// <summary>
         /// Время отправки последнего сообщения
         /// </summary>
-        public DateTime SendTime { get; set; }
+        public string SendTime { get; set; }
 
         /// <summary>
         /// Почта первого собеседника
