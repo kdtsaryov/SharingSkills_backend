@@ -17,7 +17,7 @@ namespace SharingSkills_HSE_backend.Models
         /// <summary>
         /// Время отправки
         /// </summary>
-        public DateTime SendTime { get; set; }
+        public string SendTime { get; set; }
 
         /// <summary>
         /// Текст
